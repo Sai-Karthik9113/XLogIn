@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
-  const [userAvailable, setUserAvailable] = useState();
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [userStatus, setUserStatus] = useState(null);
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
@@ -16,33 +16,27 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!userName || !password) {
-      setUserAvailable();
-    } else {
-        if (userName === 'user' && password === 'password') {
-          setUserAvailable(true);
-        } else {
-          setUserAvailable(false);
-        }
-    }
+      if (userName === 'user' && password === 'password') {
+        setUserStatus('valid');
+      } else {
+        setUserStatus('invalid');
+      }
   }
 
 
   return (
     <div className="App">
       <h1>Login Page</h1>
-      {userAvailable === false && <p>Invalid username or password</p>}
-      {userAvailable ? (
+      {userStatus === 'invalid' && <p>Invalid username or password</p>}
+      {userStatus === 'valid' ? (
         <p>Welcome, {userName}!</p>
       ) : (
         <form onSubmit={handleSubmit}>
-          <label>
-            Username:<input type='text' placeholder='username' value={userName} onChange={handleUserNameChange} required />
-          </label>
+          <label htmlFor='username'>Username:</label>
+          <input id='username' type='text' placeholder='username' value={userName} onChange={handleUserNameChange} required />
           <br />
-          <label>
-            Password:<input type='password' placeholder='password' value={password} onChange={handlePasswordChange} required />
-          </label>
+          <label htmlFor='password'>Password:</label>
+          <input id='password' type='password' placeholder='password' value={password} onChange={handlePasswordChange} required />
           <br />
           <button type='submit'>
             Submit
